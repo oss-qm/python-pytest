@@ -309,11 +309,18 @@ texinfo_documents = [
 ]
 
 
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'python': ('http://docs.python.org/', None),
-#                       'lib': ("http://docs.python.org/2.7library/", None),
-                    }
+def check_object_path(key, url, path):
+    if os.path.isfile(path):
+        return {key: (url, path)}
+    return {}
 
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {}
+intersphinx_mapping.update(
+    check_object_path('python',
+                      'http://docs.python.org/',
+                      '/usr/share/doc/python%d.%d/html/objects.inv' % \
+                       sys.version_info[:2]))
 
 def setup(app):
     #from sphinx.ext.autodoc import cut_lines
